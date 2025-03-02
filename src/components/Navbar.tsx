@@ -16,10 +16,16 @@ interface NavbarProps {
 const Navbar = ({
   logo = (
     <div className="flex items-center gap-2">
-      <div className="h-8 w-8 bg-yellow-400 rounded-full flex items-center justify-center">
-        <div className="h-4 w-6 border-2 border-black transform rotate-45"></div>
-      </div>
-      <span className="font-bold text-xl">DigitalAgency</span>
+        <img
+        src="public\Photos\Digital Pillar Logo 01-01 3.png"
+        alt="Infinity Logo"
+        className="w-auto h-12"
+      />
+      <img
+        src="public\Photos\Untitled-1 1.png"
+        alt="InfinityDigital"
+        className="w-auto h-20"
+      />
     </div>
   ),
   links = [
@@ -51,22 +57,22 @@ const Navbar = ({
   };
 
   return (
-    <nav className="w-full h-20 bg-white shadow-sm fixed top-0 left-0 z-50">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+    <nav className="fixed top-0 left-0 z-50 w-full h-20 bg-white shadow-sm">
+      <div className="container flex items-center justify-between h-full px-4 mx-auto">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
           {logo}
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="items-center hidden space-x-8 md:flex">
           {links.map((link) => (
             <div key={link.label} className="relative group">
               {link.subLinks ? (
                 <div className="flex items-center">
                   <button
                     onClick={() => toggleDropdown(link.label)}
-                    className="flex items-center text-gray-700 hover:text-yellow-500 transition-colors"
+                    className="flex items-center text-gray-700 transition-colors hover:text-yellow-500"
                   >
                     {link.label}
                     <ChevronDown
@@ -100,7 +106,7 @@ const Navbar = ({
               ) : (
                 <Link
                   to={link.href}
-                  className="text-gray-700 hover:text-yellow-500 transition-colors"
+                  className="text-gray-700 transition-colors hover:text-yellow-500"
                 >
                   {link.label}
                 </Link>
@@ -108,7 +114,7 @@ const Navbar = ({
             </div>
           ))}
 
-          <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">
+          <Button className="text-black bg-yellow-400 hover:bg-yellow-500">
             Get Started
           </Button>
         </div>
@@ -131,14 +137,14 @@ const Navbar = ({
           isMenuOpen ? "top-20 opacity-100" : "-top-96 opacity-0",
         )}
       >
-        <div className="container mx-auto px-4 py-4">
+        <div className="container px-4 py-4 mx-auto">
           {links.map((link) => (
             <div key={link.label} className="py-2">
               {link.subLinks ? (
                 <div>
                   <button
                     onClick={() => toggleDropdown(link.label)}
-                    className="flex items-center justify-between w-full text-gray-700 hover:text-yellow-500 py-2"
+                    className="flex items-center justify-between w-full py-2 text-gray-700 hover:text-yellow-500"
                   >
                     <span>{link.label}</span>
                     <ChevronDown
@@ -161,7 +167,7 @@ const Navbar = ({
                       <Link
                         key={subLink.label}
                         to={subLink.href}
-                        className="block text-gray-600 hover:text-yellow-500 py-1"
+                        className="block py-1 text-gray-600 hover:text-yellow-500"
                         onClick={toggleMenu}
                       >
                         {subLink.label}
@@ -172,7 +178,7 @@ const Navbar = ({
               ) : (
                 <Link
                   to={link.href}
-                  className="block text-gray-700 hover:text-yellow-500 py-2"
+                  className="block py-2 text-gray-700 hover:text-yellow-500"
                   onClick={toggleMenu}
                 >
                   {link.label}
@@ -182,7 +188,7 @@ const Navbar = ({
           ))}
 
           <div className="mt-4">
-            <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black">
+            <Button className="w-full text-black bg-yellow-400 hover:bg-yellow-500">
               Get Started
             </Button>
           </div>

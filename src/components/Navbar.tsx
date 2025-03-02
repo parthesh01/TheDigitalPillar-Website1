@@ -18,12 +18,10 @@ const Navbar = ({
     <div className="flex items-center gap-2">
         <img
         src="public\Photos\Digital Pillar Logo 01-01 3.png"
-        alt="Infinity Logo"
         className="w-auto h-12"
       />
       <img
         src="public\Photos\Untitled-1 1.png"
-        alt="InfinityDigital"
         className="w-auto h-20"
       />
     </div>

@@ -17,11 +17,11 @@ const Navbar = ({
   logo = (
     <div className="flex items-center gap-2">
         <img
-        src="public\Photos\Digital Pillar Logo 01-01 3.png"
+        src="\public\Photos\logo.png"
         className="w-auto h-12"
       />
       <img
-        src="public\Photos\Untitled-1 1.png"
+        src="\public\Photos\name.png"
         className="w-auto h-20"
       />
     </div>

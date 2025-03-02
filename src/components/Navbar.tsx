@@ -16,14 +16,18 @@ interface NavbarProps {
 const Navbar = ({
   logo = (
     <div className="flex items-center gap-2">
+      <Link to="/" className="flex-shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         <img
-        src="\logo.png"
-        className="w-auto h-12"
-      />
-      <img
-        src="\name.png"
-        className="w-auto h-20"
-      />
+          src="\logo.png"
+          className="w-auto h-12"
+        />
+      </Link>
+      <Link to="/" className="flex-shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <img
+          src="\name.png"
+          className="w-auto h-20"
+        />
+      </Link>
     </div>
   ),
   links = [
@@ -39,6 +43,7 @@ const Navbar = ({
         { label: "Custom Software", href: "/services/software" },
       ],
     },
+    { label: "Blogs", href: "/blogs" },
     { label: "Portfolio", href: "/portfolio" },
     { label: "Contact", href: "/contact" },
   ],
@@ -105,6 +110,9 @@ const Navbar = ({
                 <Link
                   to={link.href}
                   className="text-gray-700 transition-colors hover:text-yellow-500"
+                  onClick={() => {
+                    if (link.href === "/") window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                 >
                   {link.label}
                 </Link>

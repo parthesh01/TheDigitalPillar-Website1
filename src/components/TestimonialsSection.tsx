@@ -202,7 +202,7 @@ const TestimonialsSection = ({
         </div>
       </div>
 
-      {/* Add custom animation styles */}
+      Add custom animation styles
       <style jsx>{`
         @keyframes marquee {
           0% {

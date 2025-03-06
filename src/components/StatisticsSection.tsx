@@ -1,6 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { BarChart3, Users, Award, TrendingUp } from "lucide-react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import {
+  BarChart3,
+  Users,
+  Award,
+  TrendingUp,
+  Star,
+  Target,
+  Zap,
+  Globe,
+} from "lucide-react";
 
 interface StatItem {
   icon: React.ReactNode;
@@ -8,6 +17,7 @@ interface StatItem {
   label: string;
   suffix?: string;
   color: string;
+  description?: string;
 }
 
 interface StatisticsSectionProps {
@@ -19,29 +29,33 @@ interface StatisticsSectionProps {
 const StatisticsSection = ({
   stats = [
     {
-      icon: <Users className="h-8 w-8" />,
+      icon: <Users className="w-8 h-8" />,
       value: 250,
       label: "Happy Clients",
       color: "#FFD700",
+      description: "Trusted by businesses worldwide",
     },
     {
-      icon: <BarChart3 className="h-8 w-8" />,
+      icon: <BarChart3 className="w-8 h-8" />,
       value: 520,
       label: "Projects Completed",
       color: "#FFD700",
+      description: "Delivering excellence consistently",
     },
     {
-      icon: <Award className="h-8 w-8" />,
+      icon: <Award className="w-8 h-8" />,
       value: 15,
       label: "Awards Won",
       color: "#FFD700",
+      description: "Recognized for innovation",
     },
     {
-      icon: <TrendingUp className="h-8 w-8" />,
+      icon: <TrendingUp className="w-8 h-8" />,
       value: 99,
       suffix: "%",
       label: "Client Satisfaction",
       color: "#FFD700",
+      description: "Exceeding expectations",
     },
   ],
   title = "Our Impact in Numbers",
@@ -49,30 +63,102 @@ const StatisticsSection = ({
 }: StatisticsSectionProps) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [hoveredStat, setHoveredStat] = useState<number | null>(null);
 
   return (
     <section
       ref={sectionRef}
-      className="py-20 px-4 md:px-8 lg:px-16 bg-gray-50 w-full"
+      className="relative px-4 py-20 overflow-hidden bg-gray-900 md:px-8 lg:px-16"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(234,179,8,0.05),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+
+        {/* Rotating blocks */}
+        <motion.div
+          className="absolute top-0 right-0 w-64 h-64 rounded-full bg-yellow-500/20"
+          animate={{
+            rotate: 360,
+            scale: [1, 1.1, 1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            rotate: {
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            },
+            scale: {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            opacity: {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          }}
+        />
+        <motion.div
+          className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-yellow-500/20"
+          animate={{
+            rotate: -360,
+            scale: [1, 1.1, 1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            rotate: {
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            },
+            scale: {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            opacity: {
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          }}
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-block px-4 py-1 mb-4 text-sm font-medium text-yellow-500 rounded-full bg-yellow-500/10"
+          >
+            Our Impact
+          </motion.span>
+          <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
+            {title}
+          </h2>
+          <p className="max-w-2xl mx-auto text-gray-400">{subtitle}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <StatCard
               key={index}
               stat={stat}
               index={index}
               isInView={isInView}
+              isHovered={hoveredStat === index}
+              onHoverStart={() => setHoveredStat(index)}
+              onHoverEnd={() => setHoveredStat(null)}
             />
           ))}
         </div>
@@ -85,9 +171,19 @@ interface StatCardProps {
   stat: StatItem;
   index: number;
   isInView: boolean;
+  isHovered: boolean;
+  onHoverStart: () => void;
+  onHoverEnd: () => void;
 }
 
-const StatCard = ({ stat, index, isInView }: StatCardProps) => {
+const StatCard = ({
+  stat,
+  index,
+  isInView,
+  isHovered,
+  onHoverStart,
+  onHoverEnd,
+}: StatCardProps) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -121,25 +217,61 @@ const StatCard = ({ stat, index, isInView }: StatCardProps) => {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-white p-8 rounded-lg shadow-md flex flex-col items-center text-center"
+      onHoverStart={onHoverStart}
+      onHoverEnd={onHoverEnd}
+      className="relative group"
     >
-      <div
-        className="rounded-full p-4 mb-6"
-        style={{ backgroundColor: `${stat.color}20` }} // 20% opacity
-      >
-        {React.cloneElement(stat.icon as React.ReactElement, {
-          style: { color: stat.color },
-        })}
-      </div>
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent rounded-xl blur-xl"
+        animate={{
+          scale: isHovered ? 1.1 : 1,
+          opacity: isHovered ? 0.5 : 0.2,
+        }}
+        transition={{ duration: 0.3 }}
+      />
+      <div className="relative p-8 transition-colors duration-300 border border-gray-800 bg-gray-900/50 backdrop-blur-sm rounded-xl hover:border-yellow-500/50">
+        <motion.div
+          className="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-xl bg-yellow-500/10"
+          animate={{
+            rotate: isHovered ? 360 : 0,
+            scale: isHovered ? 1.1 : 1,
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          {React.cloneElement(stat.icon as React.ReactElement, {
+            style: { color: stat.color },
+          })}
+        </motion.div>
 
-      <div className="flex items-end justify-center mb-2">
-        <span className="text-4xl md:text-5xl font-bold">{count}</span>
-        {stat.suffix && (
-          <span className="text-4xl md:text-5xl font-bold">{stat.suffix}</span>
-        )}
-      </div>
+        <div className="flex items-end justify-center mb-2">
+          <span className="text-4xl font-bold text-white md:text-5xl">
+            {count}
+          </span>
+          {stat.suffix && (
+            <span className="text-4xl font-bold text-white md:text-5xl">
+              {stat.suffix}
+            </span>
+          )}
+        </div>
 
-      <p className="text-gray-600 font-medium">{stat.label}</p>
+        <p className="mb-2 font-medium text-center text-gray-300">
+          {stat.label}
+        </p>
+
+        <AnimatePresence>
+          {isHovered && stat.description && (
+            <motion.p
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-sm text-center text-gray-400"
+            >
+              {stat.description}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 };

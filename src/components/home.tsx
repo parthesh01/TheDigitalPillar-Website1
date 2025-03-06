@@ -6,10 +6,11 @@ import ServicesSection from "./ServicesSection";
 import TestimonialsSection from "./TestimonialsSection";
 import FAQSection from "./FAQSection";
 import Footer from "./Footer";
+import WhyUsSection from "./WhyUsSection";
 
 const Home: React.FC = () => {
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
       <Navbar />
 
@@ -18,6 +19,11 @@ const Home: React.FC = () => {
         {/* Hero Section */}
         <section id="hero" className="pt-20">
           <HeroSlider />
+        </section>
+
+        {/* Why Us Section */}
+        <section id="why-us">
+          <WhyUsSection />
         </section>
 
         {/* Statistics Section */}

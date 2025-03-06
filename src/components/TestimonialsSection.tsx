@@ -13,6 +13,7 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import { Star, Quote } from "lucide-react";
+import LogoShowcase from "./LogoShowcase";
 
 interface Testimonial {
   id: number;
@@ -88,55 +89,103 @@ const TestimonialsSection = ({
   clientLogos = [
     {
       id: 1,
-      name: "TechCorp",
-      logo: "https://api.dicebear.com/7.x/identicon/svg?seed=techcorp",
-      alt: "TechCorp Logo",
+      name: "Microsoft",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+      alt: "Microsoft Logo",
     },
     {
       id: 2,
-      name: "Innovate Solutions",
-      logo: "https://api.dicebear.com/7.x/identicon/svg?seed=innovate",
-      alt: "Innovate Solutions Logo",
+      name: "Google",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+      alt: "Google Logo",
     },
     {
       id: 3,
-      name: "Global Retail",
-      logo: "https://api.dicebear.com/7.x/identicon/svg?seed=global",
-      alt: "Global Retail Logo",
+      name: "Amazon",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+      alt: "Amazon Logo",
     },
     {
       id: 4,
-      name: "Future Finance",
-      logo: "https://api.dicebear.com/7.x/identicon/svg?seed=finance",
-      alt: "Future Finance Logo",
+      name: "Apple",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+      alt: "Apple Logo",
     },
     {
       id: 5,
-      name: "Creative Media",
-      logo: "https://api.dicebear.com/7.x/identicon/svg?seed=creative",
-      alt: "Creative Media Logo",
+      name: "Meta",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+      alt: "Meta Logo",
     },
     {
       id: 6,
-      name: "Health Innovations",
-      logo: "https://api.dicebear.com/7.x/identicon/svg?seed=health",
-      alt: "Health Innovations Logo",
+      name: "IBM",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+      alt: "IBM Logo",
+    },
+    {
+      id: 7,
+      name: "Intel",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282006-2020%29.svg",
+      alt: "Intel Logo",
+    },
+    {
+      id: 8,
+      name: "Samsung",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
+      alt: "Samsung Logo",
+    },
+    {
+      id: 9,
+      name: "Oracle",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
+      alt: "Oracle Logo",
+    },
+    {
+      id: 10,
+      name: "Salesforce",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
+      alt: "Salesforce Logo",
+    },
+    {
+      id: 11,
+      name: "Adobe",
+      logo: "https://www.vectorlogo.zone/logos/adobe/adobe-icon.svg",
+      alt: "Adobe Logo",
+    },
+    {
+      id: 12,
+      name: "Cisco",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/6/64/Cisco_logo.svg",
+      alt: "Cisco Logo",
     },
   ],
   title = "What Our Clients Say",
   subtitle = "Trusted by industry leaders worldwide",
 }: TestimonialsSectionProps) => {
-  const marqueeRef = useRef<HTMLDivElement>(null);
+  const [activeTestimonial, setActiveTestimonial] = React.useState(0);
+  const [api, setApi] = React.useState<any>(null);
   const testimonialsRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(testimonialsRef, { once: false, amount: 0.3 });
   const controls = useAnimation();
-  const [activeTestimonial, setActiveTestimonial] = React.useState(0);
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible");
     }
   }, [isInView, controls]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on("select", () => {
+      setActiveTestimonial(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const handleDotClick = (index: number) => {
+    api?.scrollTo(index);
+  };
 
   // Duplicate logos for seamless infinite scroll effect
   const duplicatedLogos = [...clientLogos, ...clientLogos];
@@ -222,24 +271,9 @@ const TestimonialsSection = ({
           </motion.p>
         </div>
 
-        {/* Client Logos Marquee */}
-        <div className="mb-16 overflow-hidden" ref={marqueeRef}>
-          <div className="flex items-center justify-start animate-marquee">
-            {duplicatedLogos.map((logo, index) => (
-              <motion.div
-                key={`${logo.id}-${index}`}
-                className="flex-shrink-0 mx-8"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <img
-                  src={logo.logo}
-                  alt={logo.alt}
-                  className="object-contain w-auto h-12 md:h-16"
-                />
-              </motion.div>
-            ))}
-          </div>
+        {/* Client Logos Showcase */}
+        <div className="mb-16">
+          <LogoShowcase clientLogos={clientLogos} />
         </div>
 
         {/* Testimonials Carousel */}
@@ -249,8 +283,8 @@ const TestimonialsSection = ({
               align: "start",
               loop: true,
             }}
+            setApi={setApi}
             className="w-full"
-            onSelect={(index) => setActiveTestimonial(index)}
           >
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
@@ -332,9 +366,10 @@ const TestimonialsSection = ({
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   activeTestimonial === index ? "bg-yellow-400" : "bg-gray-300"
                 }`}
-                onClick={() => setActiveTestimonial(index)}
+                onClick={() => handleDotClick(index)}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
+                aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>

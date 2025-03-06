@@ -30,7 +30,7 @@ interface FooterProps {
 
 const Footer = ({
   logo = "/vite.svg",
-  companyName = "Digital Agency",
+  companyName = "The Digital Pillar",
   address = "123 Innovation Street, Tech City, TC 10101",
   phone = "+1 (555) 123-4567",
   email = "contact@digitalagency.com",

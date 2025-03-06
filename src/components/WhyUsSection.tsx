@@ -185,33 +185,6 @@ const WhyUsSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Introduction */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mb-16 text-center"
-        >
-          <motion.h3
-            className="mb-4 text-2xl font-bold text-gray-900"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            Why Work With Us?
-          </motion.h3>
-          <motion.p
-            className="max-w-3xl mx-auto text-lg text-gray-600"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            We combine cutting-edge technology with creative innovation to
-            deliver exceptional digital solutions that drive your business
-            forward. Our proven track record and client-centric approach ensure
-            your success.
-          </motion.p>
-        </motion.div>
-
         {/* Features Grid */}
         <motion.div
           variants={containerVariants}
@@ -229,31 +202,41 @@ const WhyUsSection = () => {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-yellow-500/20 to-transparent rounded-xl blur-xl group-hover:opacity-100" />
-              <div className="relative p-8 transition-colors duration-300 border border-gray-200 shadow-lg bg-white/50 backdrop-blur-sm rounded-xl hover:border-yellow-500/50 hover:shadow-yellow-500/10">
-                <div className="flex items-start gap-4">
+              <div className="relative p-8 transition-colors duration-300 border-2 border-black shadow-lg bg-white/50 backdrop-blur-sm rounded-xl hover:border-yellow-500/50 hover:shadow-yellow-500/10">
+                <div className="flex items-start gap-6">
                   <motion.div
-                    className={`w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center flex-shrink-0 transform group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-16 h-16 rounded-xl bg-yellow-500/10 flex items-center justify-center flex-shrink-0 transform group-hover:scale-110 transition-transform duration-300`}
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <feature.icon className="w-6 h-6 text-yellow-600" />
+                    <feature.icon className="w-8 h-8 text-yellow-600" />
                   </motion.div>
                   <div>
                     <motion.h3
-                      className="mb-2 text-xl font-semibold text-gray-900 transition-colors duration-300 group-hover:text-yellow-600"
+                      className="mb-2 text-2xl font-semibold text-gray-900 transition-colors duration-300 group-hover:text-yellow-600"
                       whileHover={{ x: 5 }}
                     >
                       {feature.title}
                     </motion.h3>
-                    <p className="mb-3 text-gray-600">{feature.description}</p>
-                    <div className="flex items-center gap-2 text-sm font-medium text-yellow-600">
-                      <Sparkles className="w-4 h-4" />
+                    <p className="mb-4 text-lg text-gray-600">
+                      {feature.description}
+                    </p>
+                    <div className="flex items-center gap-2 text-base font-medium text-yellow-600">
+                      <Sparkles className="w-5 h-5" />
                       <span>{feature.stats}</span>
                     </div>
-                    <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
-                      <Target className="w-4 h-4" />
+                    <div className="flex items-center gap-2 mt-2 text-base text-gray-500">
+                      <Target className="w-5 h-5" />
                       <span>{feature.highlight}</span>
                     </div>
+                    <motion.div
+                      className="flex items-center mt-6 text-base font-medium text-gray-900 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                      initial={{ x: -10 }}
+                      whileHover={{ x: 5 }}
+                    >
+                      Learn more
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </motion.div>
                   </div>
                 </div>
               </div>

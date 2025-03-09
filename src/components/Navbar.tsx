@@ -14,6 +14,25 @@ interface NavbarProps {
   }>;
 }
 
+const defaultLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  {
+    label: "Services",
+    href: "/services",
+    subLinks: [
+      { label: "Web Development", href: "/services/web-development" },
+      { label: "Digital Marketing", href: "/services/digital-marketing" },
+      { label: "UI/UX Design", href: "/services/ui-ux-design" },
+      { label: "AI Integration", href: "/services/ai-integration" },
+      { label: "Cybersecurity", href: "/services/cybersecurity" },
+      { label: "Performance Optimization", href: "/services/performance" },
+    ],
+  },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Contact", href: "/contact" },
+];
+
 const Navbar = ({
   logo = (
     <div className="flex items-center gap-2">
@@ -21,22 +40,7 @@ const Navbar = ({
       <img src="\name.png" className="w-auto h-20" />
     </div>
   ),
-  links = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    {
-      label: "Services",
-      href: "/services",
-      subLinks: [
-        { label: "Web Development", href: "/services/web" },
-        { label: "Mobile Apps", href: "/services/mobile" },
-        { label: "UI/UX Design", href: "/services/design" },
-        { label: "Custom Software", href: "/services/software" },
-      ],
-    },
-    { label: "Portfolio", href: "/portfolio" },
-    { label: "Contact", href: "/contact" },
-  ],
+  links = defaultLinks,
 }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

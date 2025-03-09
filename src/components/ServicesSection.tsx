@@ -25,6 +25,7 @@ import {
   Triangle,
 } from "lucide-react";
 import FlipCard from "./FlipCard";
+import { Link } from "react-router-dom";
 
 const services = [
   {
@@ -48,6 +49,7 @@ const services = [
     stats: "100+ Projects",
     highlight: "Latest Technologies",
     shape: Star,
+    link: "/services/web-development"
   },
   {
     title: "UI/UX Design",
@@ -71,11 +73,12 @@ const services = [
     stats: "50+ Designs",
     highlight: "User-Centric",
     shape: Circle,
+    link: "/services/ui-ux-design"
   },
   {
     title: "Digital Marketing",
     description:
-      "Data-driven marketing strategies to grow your online presence.",
+      "Data-driven digital marketing strategies to grow your business.",
     icon: BarChart3,
     logo: (
       <svg
@@ -85,17 +88,15 @@ const services = [
         stroke="currentColor"
         strokeWidth="2"
       >
-        <path d="M3 3v18h18" />
-        <path d="M18 17V9" />
-        <path d="M13 17V5" />
-        <path d="M8 17v-3" />
+        <path d="M21 21H3M21 21V3M21 16L17 12L13 16L9 12L5 16" />
       </svg>
     ),
     color: "from-green-500 to-emerald-500",
-    features: ["SEO", "Social Media", "Content Strategy"],
-    stats: "200% Growth",
-    highlight: "Data-Driven",
-    shape: Hexagon,
+    features: ["SEO", "Content Marketing", "Social Media"],
+    stats: "50+ Campaigns",
+    highlight: "ROI Focused",
+    shape: Circle,
+    link: "/services/digital-marketing"
   },
   {
     title: "Global Solutions",
@@ -119,6 +120,7 @@ const services = [
     stats: "20+ Countries",
     highlight: "Global Reach",
     shape: Triangle,
+    link: "/services/global-solutions"
   },
   {
     title: "AI Integration",
@@ -154,6 +156,7 @@ const services = [
     stats: "AI-Powered",
     highlight: "Future-Ready",
     shape: Star,
+    link: "/services/ai-integration"
   },
   {
     title: "Cybersecurity",
@@ -175,6 +178,7 @@ const services = [
     stats: "99.9% Security",
     highlight: "Enterprise-Grade",
     shape: Circle,
+    link: "/services/cybersecurity"
   },
   {
     title: "Performance Optimization",
@@ -478,6 +482,13 @@ const ServicesSection = () => {
                         </motion.div>
                       ))}
                     </div>
+                    <Link
+                      to={service.link || "#"}
+                      className="inline-flex items-center justify-center w-full px-6 py-3 mt-6 text-sm font-medium text-white transition-all duration-200 rounded-lg bg-yellow-400 hover:bg-yellow-500"
+                    >
+                      Learn More
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
                   </div>
                 </div>
               </motion.div>

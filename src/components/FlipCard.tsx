@@ -1,88 +1,107 @@
-import React, { useState, useEffect } from "react";
-import { ImageIcon } from "lucide-react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 interface FlipCardProps {
   title: string;
-  imageUrl: string;
   description: string;
-  link: string;
-  index: number;
+  icon: any;
+  logo: React.ReactNode;
+  color: string;
+  features: string[];
+  stats: string;
+  highlight: string;
+  shape: any;
+  link?: string;
 }
 
 const FlipCard: React.FC<FlipCardProps> = ({
   title,
-  imageUrl,
   description,
-  link,
-  index,
+  icon: Icon,
+  logo,
+  color,
+  features,
+  stats,
+  highlight,
+  shape: Shape,
+  link
 }) => {
-  const [imageError, setImageError] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const card = document.getElementById(`card-${index}`);
-    if (card) {
-      observer.observe(card);
-    }
-
-    return () => observer.disconnect();
-  }, [index]);
-
-  return (
-    <motion.div
-      id={`card-${index}`}
-      className="flip-card h-[300px] w-full"
-      initial={{ opacity: 0, y: 50 }}
-      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      <a href={link} className="block h-full w-full">
-        <div className="flip-card-inner">
-          {/* Front of card */}
-          <div className="flip-card-front bg-white rounded-lg shadow-lg p-6 flex flex-col items-center justify-center">
-            <div className="w-24 h-24 mb-4 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
-              {imageError ? (
-                <ImageIcon className="w-12 h-12 text-gray-400" />
-              ) : (
-                <picture>
-                  <source
-                    srcSet={`${imageUrl.replace(".png", ".webp")}`}
-                    type="image/webp"
-                  />
-                  <img
-                    src={imageUrl}
-                    alt={title}
-                    className="w-full h-full object-contain"
-                    loading="lazy"
-                    decoding="async"
-                    onError={() => setImageError(true)}
-                  />
-                </picture>
-              )}
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 text-center widget-title">
-              {title}
-            </h3>
+  const frontContent = (
+    <>
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-10`} />
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-4">
+            <Icon className="w-8 h-8" />
+            {logo}
           </div>
-
-          {/* Back of card */}
-          <div className="flip-card-back bg-gradient-to-br from-yellow-500 to-yellow-400 rounded-lg shadow-lg p-6 flex items-center justify-center">
-            <p className="text-white text-center text-lg">{description}</p>
+          <h3 className="text-xl font-semibold mb-2">{title}</h3>
+          <p className="text-gray-600 mb-4">{description}</p>
+          <div className="mt-4">
+            <div className="text-sm font-medium text-gray-500">{stats}</div>
+            <div className="text-sm font-medium text-primary">{highlight}</div>
           </div>
         </div>
-      </a>
-    </motion.div>
+      </div>
+    </>
+  );
+
+  const backContent = (
+    <>
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-10`} />
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex-1">
+          <h3 className="text-xl font-semibold mb-4">{title}</h3>
+          <ul className="space-y-3 mb-6">
+            {features.map((feature, index) => (
+              <li key={index} className="flex items-center text-sm text-gray-600">
+                <Shape className="w-4 h-4 mr-2 text-primary" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+          <Link 
+            to={link || "#"} 
+            className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white transition-all duration-200 rounded-lg bg-yellow-400 hover:bg-yellow-500"
+          >
+            Learn More
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="block h-full">
+      <motion.div
+        className="relative w-full h-full min-h-[320px] rounded-xl bg-white shadow-lg p-6 cursor-pointer perspective-1000"
+        whileHover={{ scale: 1.02 }}
+        onHoverStart={() => setIsFlipped(true)}
+        onHoverEnd={() => setIsFlipped(false)}
+      >
+        <motion.div
+          className="w-full h-full"
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6 }}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <div className="absolute inset-0 backface-hidden">
+            {frontContent}
+          </div>
+          <div
+            className="absolute inset-0 backface-hidden p-6"
+            style={{ transform: "rotateY(180deg)" }}
+          >
+            {backContent}
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
